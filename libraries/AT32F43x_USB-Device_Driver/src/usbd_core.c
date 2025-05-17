@@ -426,7 +426,7 @@ void usb_ept_default_init(usbd_core_type *udev)
   * @param  len: send data length
   * @retval none
   */
-void usbd_ept_send(usbd_core_type *udev, uint8_t ept_addr, uint8_t *buffer, uint16_t len)
+void usbd_ept_send(usbd_core_type *udev, uint8_t ept_addr, uint8_t *buffer, uint32_t len)
 {
   /* get endpoint info struct and register */
   usb_reg_type *usbx = udev->usb_reg;

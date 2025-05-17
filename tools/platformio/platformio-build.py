@@ -32,6 +32,16 @@ CMSIS_DIR = join(platform.get_package_dir("framework-cmsis"), "CMSIS")
 assert isdir(FRAMEWORK_DIR)
 assert isdir(CMSIS_DIR)
 
+def process_optimization_level(cpp_defines):
+    if "OPTIMIZATION_FAST" in cpp_defines:
+        env.Append(CCFLAGS=["-O1"])
+    elif "OPTIMIZATION_FASTER" in cpp_defines:
+        env.Append(CCFLAGS=["-O2"])
+    elif "OPTIMIZATION_FASTEST" in cpp_defines:
+        env.Append(CCFLAGS=["-O3"])
+    else:
+        env.Append(CCFLAGS=["-Os"])  # default optimize for size
+
 
 mcu = board_config.get("build.mcu", "")
 mcu_type = mcu[:-2]
@@ -44,7 +54,8 @@ env.Append(
         "-std=gnu11",
         ],
     CCFLAGS=[
-        "-O1",  # optimize for speed Os
+        "-O3",  # optimize for speed Os
+        "-flto", #remove unused code
         "-mcpu=%s" % board_config.get("build.cpu"),
         "-mthumb",
         "-ffunction-sections",  # place each function in its own section
@@ -77,14 +88,16 @@ if (
     any(cpu in board_config.get("build.cpu") for cpu in ("cortex-m4"))
 ):
     env.Append(
-        CFLAGS=["-mfpu=fpv4-sp-d16", "-mfloat-abi=hard"],
-        CCFLAGS=["-mfpu=fpv4-sp-d16", "-mfloat-abi=hard"],
-        LINKFLAGS=["-mcpu=%s" % board_config.get("build.cpu"), "-mfpu=fpv4-sp-d16", "-mfloat-abi=hard"],
+        CFLAGS=["-mfpu=fpv4-sp-d16", "-mfloat-abi=hard", "-fsingle-precision-constant"],
+        CCFLAGS=["-mfpu=fpv4-sp-d16", "-mfloat-abi=hard", "-fsingle-precision-constant"],
+        LINKFLAGS=["-mcpu=%s" % board_config.get("build.cpu"), "-mfpu=fpv4-sp-d16", "-mfloat-abi=hard", "-fsingle-precision-constant"],
     )
 
 # copy CCFLAGS to ASFLAGS (-x assembler-with-cpp mode)
 env.Append(ASFLAGS=env.get("CCFLAGS", [])[:])
 
+cpp_defines = env.Flatten(env.get("CPPDEFINES", []))
+#process_optimization_level(cpp_defines)
 #
 # Target: Build Core Library
 #
@@ -103,7 +116,6 @@ libs.append(env.BuildLibrary(
     ))
 
 
-
-#print("BuildLibrary(): " + libs )
+#print("BuildLibrary(): " + env.subst(join(FRAMEWORK_DIR, "libraries", "AT32F43x_USB-FS-Device_Driver")) )
 
 env.Prepend(LIBS=libs)

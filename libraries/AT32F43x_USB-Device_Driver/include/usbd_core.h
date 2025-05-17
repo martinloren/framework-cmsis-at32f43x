@@ -149,7 +149,7 @@ void usbd_set_stall(usbd_core_type *udev, uint8_t ept_addr);
 void usbd_clear_stall(usbd_core_type *udev, uint8_t ept_addr);
 void usbd_ept_open(usbd_core_type *udev, uint8_t ept_addr, uint8_t ept_type, uint16_t maxpacket);
 void usbd_ept_close(usbd_core_type *udev, uint8_t ept_addr);
-void usbd_ept_send(usbd_core_type *udev, uint8_t ept_num, uint8_t *buffer, uint16_t len);
+void usbd_ept_send(usbd_core_type *udev, uint8_t ept_num, uint8_t *buffer, uint32_t len);
 void usbd_ept_recv(usbd_core_type *udev, uint8_t ept_num, uint8_t *buffer, uint16_t len);
 void usbd_connect(usbd_core_type *udev);
 void usbd_disconnect(usbd_core_type *udev);

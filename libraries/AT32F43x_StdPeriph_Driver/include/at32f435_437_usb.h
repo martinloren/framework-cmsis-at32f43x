@@ -426,7 +426,7 @@ typedef struct
                                                                          EPT_CONTROL_TYPE, EPT_BULK_TYPE, EPT_INT_TYPE, EPT_ISO_TYPE*/
   uint16_t                               tx_addr;                     /*!< endpoint tx buffer offset address */
   uint16_t                               rx_addr;                     /*!< endpoint rx buffer offset address */
-  uint32_t                               maxpacket;                   /*!< endpoint max packet*/
+  uint32_t                               maxpacket;                   /*!< endpoint max packet */
   uint8_t                                is_double_buffer;            /*!< endpoint double buffer flag */
   uint8_t                                stall;                       /*!< endpoint is stall state */
   uint32_t                               status;
@@ -434,7 +434,7 @@ typedef struct
   /* transmission buffer and count */
   uint8_t                                *trans_buf;                  /*!< endpoint transmission buffer */
   uint32_t                               total_len;                   /*!< endpoint transmission lengtg */
-  uint32_t                               trans_len;                   /*!< endpoint transmission length*/
+  uint32_t                               trans_len;                   /*!< endpoint transmission length */
 
   uint32_t                               last_len;                    /*!< last transfer length */
   uint32_t                               ept0_slen;                   /*!< endpoint 0 transfer sum length */
